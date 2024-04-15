@@ -1,7 +1,7 @@
 {% extends 'biblioteca/layout.html' %}
 
 {% block content %}
-    <p>Lista de autores:</p>
+    <p>Existem livros de {{ autores|length }} de autores:</p>
     <ul>
     {% for autor in autores %}
         <li>
