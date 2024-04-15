@@ -1,0 +1,17 @@
+{% extends 'biblioteca/layout.html' %}
+
+{% block content %}
+    <h3>{{ autor }}</h3>
+    <p> Nacionalidade: {{ autor.nacionalidade }}</p>
+    <p> Ano de nascimento: {{ autor.ano_nascimento }}</p>
+    <p>Livros:</p>
+    <ul>
+
+    {% load biblioteca_extras %}
+    {% for livro in autor|livros_ordenados %}
+        <li>
+            <a href="{% url 'livro' livro.id %}">{{ livro.titulo }}, {{ livro.ano_publicacao }}</a>
+        </li>
+    {% endfor %}
+    </ul>
+{% endblock %}
