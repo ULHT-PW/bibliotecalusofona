@@ -6,6 +6,7 @@ class Autor(models.Model):
     nome = models.CharField(max_length=50)
     ano_nascimento = models.IntegerField()
     nacionalidade = models.CharField(max_length=50)
+    retrato = models.ImageField(upload_to="retratos", null=True, blank=True, default=None)
 
     def __str__(self):
         return self.nome

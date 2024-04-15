@@ -2,11 +2,13 @@
 
 {% block content %}
     <h3>{{ autor }}</h3>
+    <img src='{{ autor.retrato.url}}' width="150px">
+
     <p> Nacionalidade: {{ autor.nacionalidade }}</p>
     <p> Ano de nascimento: {{ autor.ano_nascimento }}</p>
-    <p>Temos {{ autor.livros.all|length }} livros:</p>
-    <ul>
 
+    <p>Existem na biblioteca {{ autor.livros.all|length }} livros de {{autor}}:</p>
+    <ul>
     {% load biblioteca_extras %}
     {% for livro in autor|livros_ordenados %}
         <li>
@@ -14,4 +16,6 @@
         </li>
     {% endfor %}
     </ul>
+
+
 {% endblock %}
