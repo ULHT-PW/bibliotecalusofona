@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 # Create your views here.
-from .models import *
+from .models import Autor, Livro
 
 
 def index_view(request):
