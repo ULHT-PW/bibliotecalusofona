@@ -1,10 +1,17 @@
-# Recursos
-• Aplicação biblioteca: https://bibliotecalusofona.pythonanywhere.com/
-• Código: https://github.com/ULHTPW/bibliotecalusofona/tree/main/biblioteca
-• Aplicação admin (usr:admin, pwd:admin): https://bibliotecalusofona.pythonanywhere.com/admin/
+# Tutorial: como criar uma web app em Django criando views, templates e urls.
 
-Passos para Criação da Aplicação
+### Recursos
+* Aplicação biblioteca: https://bibliotecalusofona.pythonanywhere.com/
+* Código: https://github.com/ULHTPW/bibliotecalusofona/tree/main/biblioteca
+* Aplicação admin (usr:admin, pwd:admin): https://bibliotecalusofona.pythonanywhere.com/admin/
 
+### Passos já realizados
+Considera-se que:
+* já está implementada modelação em [models.py](https://github.com/ULHT-PW/bibliotecalusofona/blob/main/biblioteca/models.py) da aplicação
+* existem disponiveis na [pasta json](https://github.com/ULHT-PW/bibliotecalusofona/tree/main/biblioteca/json) dados para alimentar a base de dados
+* foram carregados dados disponiveis em JSON, usando um [script](https://github.com/ULHT-PW/bibliotecalusofona/blob/main/biblioteca/loader.py)  
+
+### Passos para criação da aplicação
 1. Analisar a modelação em [models.py](https://github.com/ULHT-PW/bibliotecalusofona/blob/main/biblioteca/models.py)
 2. Ver dados na aplicação [admin](https://bibliotecalusofona.pythonanywhere.com/admin) (usr:admin, pwd:admin)
 3. Analisar como [admin.py](https://github.com/ULHT-PW/bibliotecalusofona/blob/4a6800349d89af51cf9c4365d1f9f2f58d581820/biblioteca/admin.py) configura a visualização das tabelas, em particular o uso de ordering, list_display, list_filter, inlines
