@@ -86,14 +86,19 @@ def novo_autor_view(request):
 6. visualizar
 7. receber valor, guardar e redirecionar para lista de autores
 ```python
-def novo_autor_view(request):
-    form = AutorForm(request.POST or None, request.FILES)
+
+def novo_livro_view(request, autor_id):
+    autor = Autor.objects.get(id=autor_id)  # Retrieve the Autor object using autor_id
+    form = LivroForm(request.POST or None, request.FILES)
+
     if form.is_valid():
-        form.save()
+        livro = form.save(commit=False)  # cria objeto Livro sem gravar na base de dados
+        livro.autor = autor  
+        livro.save()  
         return redirect('autores')
     
     context = {'form': form}
-    return render(request, 'biblioteca/novo_autor.html', context)
+    return render(request, 'biblioteca/novo_livro.html', context)
 ```
 8. remover mensagem de obrigatorio? em `layout.html`, no elemento `<style>`:
 ```css

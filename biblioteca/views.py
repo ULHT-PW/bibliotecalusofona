@@ -73,10 +73,14 @@ def apaga_autor_view(request, autor_id):
     return redirect('autores')
 
 
-def novo_livro_view(request):
+def novo_livro_view(request, autor_id):
+    autor = Autor.objects.get(id=autor_id)  # Retrieve the Autor object using autor_id
     form = LivroForm(request.POST or None, request.FILES)
+
     if form.is_valid():
-        form.save()
+        livro = form.save(commit=False)  # Create a Livro instance without saving to the database yet
+        livro.autor = autor  # Set the autor attribute of the Livro instance
+        livro.save()  # Save the Livro instance to the database
         return redirect('autores')
     
     context = {'form': form}

@@ -19,6 +19,8 @@
         </li>
     {% endfor %}
     </ul>
-
+    <a href="{% url 'novo_livro' autor.id %}">
+        <button>Inserir novo Livro</button>
+    </a>
 
 {% endblock %}
