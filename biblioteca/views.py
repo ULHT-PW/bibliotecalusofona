@@ -1,8 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 # Create your views here.
 from .models import Autor, Livro
-
+from .forms import AutorForm, LivroForm
 
 def index_view(request):
     context = {
@@ -40,3 +40,45 @@ def genero_view(request, genero):
         'livros': Livro.objects.filter(genero=genero),
     }
     return render(request, "biblioteca/genero.html", context)
+
+
+def novo_autor_view(request):
+    form = AutorForm(request.POST or None, request.FILES)
+    if form.is_valid():
+        form.save()
+        return redirect('autores')
+    
+    context = {'form': form}
+    return render(request, 'biblioteca/novo_autor.html', context)
+    
+    
+def edita_autor_view(request, autor_id):
+    autor = Autor.objects.get(id=autor_id)
+    
+    if request.POST:
+        form = AutorForm(request.POST or None, request.FILES, instance=autor)
+        if form.is_valid():
+            form.save()
+            return redirect('autores')
+    else:
+        form = AutorForm(instance=autor)
+        
+    context = {'form': form, 'autor':autor}
+    return render(request, 'biblioteca/edita_autor.html', context)
+    
+    
+def apaga_autor_view(request, autor_id):
+    autor = Autor.objects.get(id=autor_id)
+    autor.delete()
+    return redirect('autores')
+
+
+def novo_livro_view(request):
+    form = LivroForm(request.POST or None, request.FILES)
+    if form.is_valid():
+        form.save()
+        return redirect('autores')
+    
+    context = {'form': form}
+    return render(request, 'biblioteca/novo_livro.html', context)
+    
