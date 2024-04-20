@@ -95,7 +95,12 @@ def novo_autor_view(request):
     context = {'form': form}
     return render(request, 'biblioteca/novo_autor.html', context)
 ```
-
+8. remover mensagem de obrigatorio? em `layout.html`, no elemento `<style>`:
+```css
+.errorlist {
+    display:none;
+}
+```
 # Edita autor
 1. cria nova view
 ```python
@@ -138,7 +143,6 @@ def edita_autor_view(request, autor_id):
         <button>Editar informação do Autor</button>
     </a>
 ```
-
 
 # Apagar autor
 1. cria nova view
