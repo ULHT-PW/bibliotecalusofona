@@ -43,10 +43,10 @@ Considera-se que:
 
 1. criar `forms.py` com  ModelForm `AutorForm` 
 ```python
-from django.forms import ModelForm
+from django import forms
 from .models import Autor
 
-class AutorForm(ModelForm):
+class AutorForm(forms.ModelForm):
   class Meta:
     model = Autor
     fields = '__all__'
@@ -160,9 +160,9 @@ def apaga_autor_view(request, autor_id):
 ```
 
 # Novo Livro
-1. cria novo ModelForm `LivroForm` 
+1. cria novo ModelForm `LivroForm` em `forms.py`
 ```python
-class LivroForm(ModelForm):
+class LivroForm(forms.ModelForm):
   class Meta:
     model = Livro
     fields = '__all__'
