@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 from .models import Autor, Livro
@@ -41,7 +42,7 @@ def genero_view(request, genero):
     }
     return render(request, "biblioteca/genero.html", context)
 
-
+@login_required
 def novo_autor_view(request):
     form = AutorForm(request.POST or None, request.FILES)
     if form.is_valid():
@@ -50,8 +51,9 @@ def novo_autor_view(request):
     
     context = {'form': form}
     return render(request, 'biblioteca/novo_autor.html', context)
+  
     
-    
+@login_required
 def edita_autor_view(request, autor_id):
     autor = Autor.objects.get(id=autor_id)
     
@@ -67,12 +69,14 @@ def edita_autor_view(request, autor_id):
     return render(request, 'biblioteca/edita_autor.html', context)
     
     
+@login_required
 def apaga_autor_view(request, autor_id):
     autor = Autor.objects.get(id=autor_id)
     autor.delete()
     return redirect('autores')
 
 
+@login_required
 def novo_livro_view(request, autor_id):
     autor = Autor.objects.get(id=autor_id)  # Retrieve the Autor object using autor_id
     form = LivroForm(request.POST or None, request.FILES)
@@ -85,4 +89,42 @@ def novo_livro_view(request, autor_id):
     
     context = {'form': form}
     return render(request, 'biblioteca/novo_livro.html', context)
-    
+
+
+from django.contrib.auth import models, authenticate, login, logout
+
+def registo_view(request):
+    if request.method == "POST":
+        models.User.objects.create_user(
+            username=request.POST['username'],
+            email=request.POST['email'],
+            first_name=request.POST['nome'],
+            last_name=request.POST['apelido'],
+            password=request.POST['password']
+        )
+        return redirect('login')
+        
+    return render(request, 'biblioteca/registo.html')
+   
+   
+def login_view(request):
+    if request.method == "POST":
+        user = authenticate(
+            request,
+            username=request.POST['username'],
+            password=request.POST['password']
+        )
+        if user:
+            login(request, user)
+            return render(request, 'biblioteca/user.html')
+        else:
+            render(request, 'biblioteca/login.html', {
+                'mensagem':'Credenciais inválidas'
+            })
+        
+    return render(request, 'biblioteca/login.html')
+
+   
+def logout_view(request):
+    logout(request)
+    return redirect('autores')

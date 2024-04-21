@@ -237,3 +237,145 @@ class LivroForm(forms.ModelForm):
       'ano_publicacao': 'verifique o ano de publicação', 
     }
 ```
+
+# Utilizadores
+
+# Registo
+1. Crie um template `registo.html`
+```html
+{% extends 'biblioteca/layout.html' %}
+
+{% block content %}
+    <h3>Registo</h3>
+    
+    <form action="{% url 'registo' %}" method="post">
+      {% csrf_token %}
+      <input type="text" name="username" placeholder="O seu username..">
+      <input type="text" name="nome" placeholder="O seu nome..">
+      <input type="text" name="apelido" placeholder="O seu apelido..">
+      <input type="email" name="email" placeholder="O seu email..">
+      <input type="password" name="password" placeholder="Defina a sua password..">
+      <input type="submit" value="Criar">
+    </form> 
+    
+    <a href="{% url 'login' %}">Cancelar</a>
+
+{% endblock %}
+```
+2. crie `registo_view`
+```python
+from django.contrib.auth import models
+
+def registo_view(request):
+    if request.method == "POST":
+        models.User.objects.create_user(
+            username=request.POST['username'],
+            email=request.POST['email'],
+            first_name=request.POST['nome'],
+            last_name=request.POST['apelido'],
+            password=request.POST['password']
+        )
+        return redirect('login')
+        
+    return render(request, 'biblioteca/registo.html')
+```
+3. crie caminho `registo`
+```python
+    path('registo/', views.registo_view, name="registo"),
+```
+
+## Login
+1. crie template `login.html`
+```html
+{% extends 'biblioteca/layout.html' %}
+
+{% block content %}
+    <h3>Login</h3>
+    
+    {% if mensagem %}
+      <p>mensagem: {{ mensagem }}</p>
+    {% endif %}
+    <form action="{% url 'login' %}" method="post">
+      {% csrf_token %}
+      <input type="text" name="username" placeholder="Username..">
+      <input type="password" name="password" placeholder="Password..">
+      <input type="submit">
+    </form>      
+
+{% endblock %}
+```
+2. crie botão login
+```html
+    <h1>Biblioteca da Lusofonía</h1>
+    
+    <a href="{% url 'autores' %}"><button>Autores</button></a>
+    <a href="{% url 'generos' %}"><button>Géneros</button></a>
+    <a href="{% url 'login' %}"><button>Login</button></a>
+```
+3. crie `login_view`
+```python
+from django.contrib.auth import authenticate, login
+
+ef login_view(request):
+    if request.method == "POST":
+        user = authenticate(
+            request,
+            username=request.POST['username'],
+            password=request.POST['password']
+        )
+        if user:
+            login(request, user)
+            return render(request, 'biblioteca/user.html')
+        else:
+            render(request, 'biblioteca/login.html', {
+                'mensagem':'Credenciais inválidas'
+            })
+        
+    return render(request, 'biblioteca/login.html')
+```
+4. crie caminho `login`
+```python
+    path('login/', views.login_view, name="login"),
+```
+5. em views que requeiram estar autenticado, insira decorador `@login_required` 
+```python
+@login_required
+def apaga_autor_view(request, autor_id):
+    autor = Autor.objects.get(id=autor_id)
+    autor.delete()
+    return redirect('autores')
+```
+6. Em links Create/Update/Delete que requeiram estar autenticado, avalie se está. Por exemplo, em `layout.html`, só permite criar novo autor se estiver autenticado.
+```html
+{% if request.user.is_authenticated %}
+    <a href="{% url 'novo_autor' %}">
+        <button>Inserir novo Autor</button>
+    </a>
+{% endif %}
+```
+
+## Logout
+1. crie `logout_view`
+```python
+from django.contrib.auth import logout
+
+def logout_view(request):
+    logout(request)
+    return redirect('autores')
+```
+2. crie caminho `logout`
+```python
+    path('logout/', views.logout_view, name="logout"),
+```
+3. crie botão `logout`
+```html
+    {% if request.user.is_authenticated %}
+        Username:{{request.user.username}}
+        <a href="{% url 'logout' %}"><button>Logout</button></a>
+    {% else %}
+        <a href="{% url 'login' %}"><button>Login</button></a>
+    {% endif %}
+```
+4. crie caminho `login`
+```python
+```

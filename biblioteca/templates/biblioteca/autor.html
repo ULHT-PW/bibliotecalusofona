@@ -6,9 +6,12 @@
 
     <p> Nacionalidade: {{ autor.nacionalidade }}</p>
     <p> Ano de nascimento: {{ autor.ano_nascimento }}</p>
+    
+    {% if request.user.is_authenticated %}
     <a href="{% url 'edita_autor' autor.id %}">
         <button>Editar informação do Autor</button>
     </a>
+    {% endif %}
 
     <p>Existem na biblioteca {{ autor.livros.all|length }} livros de {{autor}}:</p>
     <ul>
@@ -19,8 +22,11 @@
         </li>
     {% endfor %}
     </ul>
+
+    {% if request.user.is_authenticated %}
     <a href="{% url 'novo_livro' autor.id %}">
         <button>Inserir novo Livro</button>
     </a>
+    {% endif %}
 
 {% endblock %}
