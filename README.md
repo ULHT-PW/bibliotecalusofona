@@ -241,8 +241,13 @@ class LivroForm(forms.ModelForm):
 # Utilizadores
 Registo, login, logout, autenticação, restrições de acesso a views e elementos HTML
 
+Passos: 
+1. Crie template
+2. Em views.py, crie view
+3. Em urls.py, crie caminho
+
 # Registo
-1. Crie um template `registo.html`
+1. Crie um template `registo.html` com formulário que recolhe as credenciais e as reenvia para a view `registo`
 ```html
 {% extends 'biblioteca/layout.html' %}
 
@@ -263,7 +268,7 @@ Registo, login, logout, autenticação, restrições de acesso a views e element
 
 {% endblock %}
 ```
-2. em `views.py`, crie `registo_view`
+2. em `views.py`, crie `registo_view` para criar novo utilizador
 ```python
 from django.contrib.auth import models
 
@@ -286,7 +291,7 @@ def registo_view(request):
 ```
 
 ## Login
-1. crie template `login.html`
+1. crie template `login.html`  com formulário que pede as credenciais e as reenvia para a view `login`
 ```html
 {% extends 'biblioteca/layout.html' %}
 
@@ -305,15 +310,16 @@ def registo_view(request):
 
 {% endblock %}
 ```
-2. em `layout.html`, crie botão login
+2. em `layout.html`, crie botão para fazer login
 ```html
     <h1>Biblioteca da Lusofonía</h1>
     
     <a href="{% url 'autores' %}"><button>Autores</button></a>
     <a href="{% url 'generos' %}"><button>Géneros</button></a>
+
     <a href="{% url 'login' %}"><button>Login</button></a>
 ```
-3. em `views.py`, crie `login_view`
+3. em `views.py`, crie `login_view` para autenticar e fazer login
 ```python
 from django.contrib.auth import authenticate, login
 
@@ -338,7 +344,7 @@ ef login_view(request):
 ```python
     path('login/', views.login_view, name="login"),
 ```
-5.  em `views.py`, views que requeiram estar autenticado, insira decorador `@login_required` 
+5.  em `views.py`, inserir decorador `@login_required` em views que requeiram estar autenticado
 ```python
 @login_required
 def apaga_autor_view(request, autor_id):
@@ -346,7 +352,7 @@ def apaga_autor_view(request, autor_id):
     autor.delete()
     return redirect('autores')
 ```
-6. Em links Create/Update/Delete que requeiram estar autenticado, avalie se está. Por exemplo, em `layout.html`, só permite criar novo autor se estiver autenticado.
+6. Usar `request.user.is_authenticated` para avaliar se está autenticado. Por exemplo, links para operações Create/Update/Delete que requeiram estar autenticado. Por exemplo, em `layout.html`, só permite criar novo autor se estiver autenticado.
 ```html
 {% if request.user.is_authenticated %}
     <a href="{% url 'novo_autor' %}">
@@ -356,7 +362,7 @@ def apaga_autor_view(request, autor_id):
 ```
 
 ## Logout
-1. em `views.py`, crie `logout_view`
+1. em `views.py`, crie `logout_view` com chamada de `logout`
 ```python
 from django.contrib.auth import logout
 
@@ -368,7 +374,7 @@ def logout_view(request):
 ```python
     path('logout/', views.logout_view, name="logout"),
 ```
-3.  em `layout.html`, crie botão `logout`
+3.  em `layout.html`, crie botão `logout` que aparece se estiver autenticado
 ```html
     {% if request.user.is_authenticated %}
         Username:{{request.user.username}}

@@ -6,6 +6,10 @@
     {% if mensagem %}
       <p>mensagem: {{ mensagem }}</p>
     {% endif %}
+
+    <!-- formulário que pede as credenciais 
+    e as reenvia para a view 'login'. -->
+
     <form action="{% url 'login' %}" method="post">
       {% csrf_token %}
       <input type="text" name="username" placeholder="Username..">

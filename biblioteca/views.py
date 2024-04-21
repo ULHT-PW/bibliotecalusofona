@@ -68,7 +68,8 @@ def edita_autor_view(request, autor_id):
     context = {'form': form, 'autor':autor}
     return render(request, 'biblioteca/edita_autor.html', context)
     
-    
+from django.contrib.auth.decorators import login_required
+
 @login_required
 def apaga_autor_view(request, autor_id):
     autor = Autor.objects.get(id=autor_id)
@@ -109,15 +110,19 @@ def registo_view(request):
    
 def login_view(request):
     if request.method == "POST":
+        
+        # Verifica as credenciais
         user = authenticate(
             request,
             username=request.POST['username'],
             password=request.POST['password']
         )
         if user:
+            # Se as credenciais são válidas, faz login e redireciona
             login(request, user)
             return render(request, 'biblioteca/user.html')
         else:
+            # Se inválidas, reenvia para login com mensagem
             render(request, 'biblioteca/login.html', {
                 'mensagem':'Credenciais inválidas'
             })
