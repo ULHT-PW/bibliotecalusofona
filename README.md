@@ -239,6 +239,7 @@ class LivroForm(forms.ModelForm):
 ```
 
 # Utilizadores
+Registo, login, logout, autenticação, restrições de acesso a views e elementos HTML
 
 # Registo
 1. Crie um template `registo.html`
@@ -262,7 +263,7 @@ class LivroForm(forms.ModelForm):
 
 {% endblock %}
 ```
-2. crie `registo_view`
+2. em `views.py`, crie `registo_view`
 ```python
 from django.contrib.auth import models
 
@@ -279,7 +280,7 @@ def registo_view(request):
         
     return render(request, 'biblioteca/registo.html')
 ```
-3. crie caminho `registo`
+3. em `urls.py`, crie caminho `registo`
 ```python
     path('registo/', views.registo_view, name="registo"),
 ```
@@ -304,7 +305,7 @@ def registo_view(request):
 
 {% endblock %}
 ```
-2. crie botão login
+2. em `layout.html`, crie botão login
 ```html
     <h1>Biblioteca da Lusofonía</h1>
     
@@ -312,7 +313,7 @@ def registo_view(request):
     <a href="{% url 'generos' %}"><button>Géneros</button></a>
     <a href="{% url 'login' %}"><button>Login</button></a>
 ```
-3. crie `login_view`
+3. em `views.py`, crie `login_view`
 ```python
 from django.contrib.auth import authenticate, login
 
@@ -333,11 +334,11 @@ ef login_view(request):
         
     return render(request, 'biblioteca/login.html')
 ```
-4. crie caminho `login`
+4.  em `urls.py`, crie caminho `login`
 ```python
     path('login/', views.login_view, name="login"),
 ```
-5. em views que requeiram estar autenticado, insira decorador `@login_required` 
+5.  em `views.py`, views que requeiram estar autenticado, insira decorador `@login_required` 
 ```python
 @login_required
 def apaga_autor_view(request, autor_id):
@@ -355,7 +356,7 @@ def apaga_autor_view(request, autor_id):
 ```
 
 ## Logout
-1. crie `logout_view`
+1. em `views.py`, crie `logout_view`
 ```python
 from django.contrib.auth import logout
 
@@ -363,11 +364,11 @@ def logout_view(request):
     logout(request)
     return redirect('autores')
 ```
-2. crie caminho `logout`
+2. em `urls.py`, crie caminho `logout`
 ```python
     path('logout/', views.logout_view, name="logout"),
 ```
-3. crie botão `logout`
+3.  em `layout.html`, crie botão `logout`
 ```html
     {% if request.user.is_authenticated %}
         Username:{{request.user.username}}
@@ -375,7 +376,4 @@ def logout_view(request):
     {% else %}
         <a href="{% url 'login' %}"><button>Login</button></a>
     {% endif %}
-```
-4. crie caminho `login`
-```python
 ```
