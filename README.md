@@ -1,4 +1,4 @@
-# Tutorial: como criar uma web app em Django criando views, templates e urls.
+# Tutorial: criação de web app em Django com views, templates e urls.
 
 ### Recursos
 * Aplicação biblioteca: https://bibliotecalusofona.pythonanywhere.com/
