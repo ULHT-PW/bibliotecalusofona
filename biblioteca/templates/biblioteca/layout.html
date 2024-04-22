@@ -5,13 +5,25 @@
             body {
                 background: khaki;
             }
+            .errorlist {
+                display:none;
+            }
         </style>
     </head>
     <body>
         <header>
             <h1>Biblioteca da Lusofonía</h1>
+            
             <a href="{% url 'autores' %}"><button>Autores</button></a>
             <a href="{% url 'generos' %}"><button>Géneros</button></a>
+            
+            {% if request.user.is_authenticated %}
+                Username:{{request.user.username}}
+                <a href="{% url 'logout' %}"><button>Logout</button></a>
+            {% else %}
+                <a href="{% url 'login' %}"><button>Login</button></a>
+            {% endif %}
+            
         </header>
 
         <main>
