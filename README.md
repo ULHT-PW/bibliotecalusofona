@@ -41,7 +41,7 @@ Considera-se que:
 
 # Formulário de criação de novo autor
 
-1. criar `forms.py` com  ModelForm `AutorForm` 
+1. criar `forms.py` com  ModelForm `AutorForm`
 ```python
 from django import forms
 from .models import Autor
@@ -54,7 +54,7 @@ class AutorForm(forms.ModelForm):
 2. criar `novo_autor_view`
 ```python
 def novo_autor_view(request):
-    form = AutorForm()
+    form = AutorForm()   # instancia de AutorForm, com os campos para formulário
     context = {'form': form}
     return render(request, 'biblioteca/novo_autor.html', context)
 ```
@@ -62,16 +62,16 @@ def novo_autor_view(request):
 ```python
     path('autor/novo', views.novo_autor_view,name="novo_autor")
 ```
-4. Criar template `novo_autor.html``
+4. Criar template `novo_autor.html`
 ```html
 {% extends 'biblioteca/layout.html' %}
 
 {% block content %}
     <h3>Novo Autor</h3>
     
-    <form action="" method="post" enctype='multipart/form-data'>
-      {% csrf_token %}
-      {{ form.as_p }}
+    <form action="" method="post" enctype='multipart/form-data'>  <!-- enctype deve ser definido se houver submissão de ficheiros ou imagens -->
+      {% csrf_token %}   <!-- obrigatório nos forms Django -->
+      {{ form.as_p }}   <!-- insere input para cada atributo da classe Form -->
       <input type="submit">
     </form>      
 
@@ -87,7 +87,9 @@ def novo_autor_view(request):
 7. receber valor, guardar e redirecionar para lista de autores
 ```python
 def novo_autor_view(request):
-    form = AutorForm(request.POST or None, request.FILES)
+
+    # cria instância de formulário. se houver dados submetidos (em request.POST), ficamos com formulario com dados e potencialmente válido. Senão, o form é vazio (e não passa o teste .is_valid())
+    form = AutorForm(request.POST or None, request.FILES)  # request.FILES deve ser incluido se houver submissão de ficheiros ou imagens
     if form.is_valid():
         form.save()
         return redirect('autores')
