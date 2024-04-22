@@ -188,7 +188,7 @@ def novo_livro_view(request, autor_id):
     context = {'form': form}
     return render(request, 'biblioteca/novo_livro.html', context)
 ```
-3. Criar template `novo_autor.html``
+3. Criar template `novo_livro.html`
 ```html
 {% extends 'biblioteca/layout.html' %}
 
