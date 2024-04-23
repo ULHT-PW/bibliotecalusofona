@@ -44,21 +44,22 @@ Considera-se que:
 1. na pasta da sua aplicação, onde está `views.py`, criar `forms.py` com ModelForm `AutorForm`, formulário que terá como base a classe Autor.
 ```python
 from django import forms    # formulários Django
-from .models import Autor   # classe para a qual criaremos um formulário
+from .models import Autor   
 
 class AutorForm(forms.ModelForm):
   class Meta:
-    model = Autor
-    fields = '__all__'      # incluimos no formulário todos os campos da classe Autor.
+    model = Autor        # classe para a qual é o formulário
+    fields = '__all__'   # inclui no form todos os campos da classe Autor.
 ```
-2. criar `novo_autor_view`
+2. em `views.py`, criar view `novo_autor_view`
 ```python
 def novo_autor_view(request):
-    form = AutorForm()      # form é uma instancia de AutorForm, com todos os campos para formulário
+    form = AutorForm()      # form é uma instancia de AutorForm,
+                            # formulário em branco com os campos de Autor
     context = {'form': form}
     return render(request, 'biblioteca/novo_autor.html', context)
 ```
-3. criar em `urls.py` novo caminho para a view criada
+3. em `urls.py`, criar novo caminho para a view criada
 ```python
     path('autor/novo', views.novo_autor_view,name="novo_autor")
 ```
