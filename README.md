@@ -75,7 +75,7 @@ def novo_autor_view(request):
 
       {% csrf_token %}   <!-- obrigatório nos forms Django -->
       <table>
-      {{ form.as_p }}   <!-- insere input para cada atributo da classe Form -->
+          {{ form }}   <!-- insere input para cada atributo da classe Autor, numa tabela -->
       </table>
       <input type="submit" value="Criar autor"> 
     </form>      
