@@ -244,7 +244,7 @@ class LivroForm(forms.ModelForm):
 ```
 
 # Utilizadores
-Registo, login, logout, autenticação, restrições de acesso a views e elementos HTML
+Registo, login, logout, autenticação, restrições de acesso a views e elementos HTML. Esta matéria será lecionada na semana de 29.4. 
 
 Passos: 
 1. Crie template
