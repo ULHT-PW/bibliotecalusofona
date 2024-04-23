@@ -61,7 +61,7 @@ def novo_autor_view(request):
 ```
 3. em `urls.py`, criar novo caminho para a view criada
 ```python
-    path('autor/novo', views.novo_autor_view,name="novo_autor")
+    path('autor/novo', views.novo_autor_view, name="novo_autor")
 ```
 4. Criar template `novo_autor.html`
 ```html
@@ -70,28 +70,31 @@ def novo_autor_view(request):
 {% block content %}
     <h3>Novo Autor</h3>
     
-    <form action="" method="post" enctype='multipart/form-data'>  <!-- enctype deve ser definido se houver submissão de ficheiros ou imagens -->
-      {% csrf_token %}   <!-- obrigatório nos forms Django -->
-      {{ form.as_p }}   <!-- insere input para cada atributo da classe Form -->
+    <form action="" method="post" enctype='multipart/form-data'>
+    <!-- enctype deve ser definido se houver submissão de ficheiros ou imagens -->
 
+      {% csrf_token %}   <!-- obrigatório nos forms Django -->
+      <table>
+      {{ form.as_p }}   <!-- insere input para cada atributo da classe Form -->
+      </table>
       <input type="submit" value="Criar autor"> 
     </form>      
 
 {% endblock %}
 ```
-5. inserir no `index.html`, depois da lista de autores, um botão com um link para o caminho `novo_autor`
+5. Em `index.html`, depois da lista de autores, inserir um botão com link para o caminho `novo_autor`
 ```html
     <a href="{% url 'novo_autor' %}">
         <button>Inserir novo Autor</button>
     </a>
 ```
 6. visualizar a página na aplicação
-7. configurar a view novo_autor_view para receber os valores submetidos através do formulário, guardando-os e redirecionando para a lista de autores
+7. configurar a view `novo_autor_view` para receber os valores submetidos através do formulário, guardando-os e redirecionando para a lista de autores
 ```python
 def novo_autor_view(request):
 
     # criar instância de formulário.
-    # Se foram submetidos dados (em request.POST), o formulario com dados é válido. 
+    # Se foram submetidos dados, estes estão em request.POST e o formulario com dados é válido. 
     # Senão, o form não tem dados e não é válido
     form = AutorForm(request.POST or None, request.FILES)  # request.FILES deve ser incluido se forem enviados ficheiros ou imagens
     if form.is_valid():
@@ -108,7 +111,7 @@ def novo_autor_view(request):
 }
 ```
 # Edita autor
-1. cria nova view
+1. cria nova view `edita_autor_view`. 
 ```python
 def edita_autor_view(request, autor_id):
     autor = Autor.objects.get(id=autor_id)
@@ -119,7 +122,7 @@ def edita_autor_view(request, autor_id):
             form.save()
             return redirect('autores')
     else:
-        form = AutorForm(instance=autor)
+        form = AutorForm(instance=autor)  # cria formulário com dados da instância autor
         
     context = {'form': form, 'autor':autor}
     return render(request, 'biblioteca/edita_autor.html', context)
