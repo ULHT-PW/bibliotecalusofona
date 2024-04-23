@@ -41,24 +41,24 @@ Considera-se que:
 
 # Formulário de criação de novo autor
 
-1. criar `forms.py` com  ModelForm `AutorForm`
+1. na pasta da sua aplicação, onde está `views.py`, criar `forms.py` com ModelForm `AutorForm`, formulário que terá como base a classe Autor.
 ```python
-from django import forms
-from .models import Autor
+from django import forms    # formulários Django
+from .models import Autor   # classe para a qual criaremos um formulário
 
 class AutorForm(forms.ModelForm):
   class Meta:
     model = Autor
-    fields = '__all__'
+    fields = '__all__'      # incluimos no formulário todos os campos da classe Autor.
 ```
 2. criar `novo_autor_view`
 ```python
 def novo_autor_view(request):
-    form = AutorForm()   # instancia de AutorForm, com os campos para formulário
+    form = AutorForm()      # form é uma instancia de AutorForm, com todos os campos para formulário
     context = {'form': form}
     return render(request, 'biblioteca/novo_autor.html', context)
 ```
-3. criar novo caminho em `urls.py`
+3. criar em `urls.py` novo caminho para a view criada
 ```python
     path('autor/novo', views.novo_autor_view,name="novo_autor")
 ```
@@ -72,24 +72,27 @@ def novo_autor_view(request):
     <form action="" method="post" enctype='multipart/form-data'>  <!-- enctype deve ser definido se houver submissão de ficheiros ou imagens -->
       {% csrf_token %}   <!-- obrigatório nos forms Django -->
       {{ form.as_p }}   <!-- insere input para cada atributo da classe Form -->
-      <input type="submit">
+
+      <input type="submit" value="Criar autor"> 
     </form>      
 
 {% endblock %}
 ```
-5. inserir no `index.html`, depois da lista de autores, um botão com um link para `novo_autor`
+5. inserir no `index.html`, depois da lista de autores, um botão com um link para o caminho `novo_autor`
 ```html
     <a href="{% url 'novo_autor' %}">
         <button>Inserir novo Autor</button>
     </a>
 ```
-6. visualizar
-7. receber valor, guardar e redirecionar para lista de autores
+6. visualizar a página na aplicação
+7. configurar a view novo_autor_view para receber os valores submetidos através do formulário, guardando-os e redirecionando para a lista de autores
 ```python
 def novo_autor_view(request):
 
-    # cria instância de formulário. se houver dados submetidos (em request.POST), ficamos com formulario com dados e potencialmente válido. Senão, o form é vazio (e não passa o teste .is_valid())
-    form = AutorForm(request.POST or None, request.FILES)  # request.FILES deve ser incluido se houver submissão de ficheiros ou imagens
+    # criar instância de formulário.
+    # Se foram submetidos dados (em request.POST), o formulario com dados é válido. 
+    # Senão, o form não tem dados e não é válido
+    form = AutorForm(request.POST or None, request.FILES)  # request.FILES deve ser incluido se forem enviados ficheiros ou imagens
     if form.is_valid():
         form.save()
         return redirect('autores')
@@ -97,7 +100,7 @@ def novo_autor_view(request):
     context = {'form': form}
     return render(request, 'biblioteca/novo_autor.html', context)
 ```
-8. remover mensagem de obrigatorio? em `layout.html`, no elemento `<style>`:
+8. visualizar aplicação. Vamos remover mensagem de obrigatorio? em `layout.html`, no elemento `<style>`:
 ```css
 .errorlist {
     display:none;
