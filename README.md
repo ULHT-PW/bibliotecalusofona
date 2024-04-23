@@ -357,7 +357,7 @@ def apaga_autor_view(request, autor_id):
     autor.delete()
     return redirect('autores')
 ```
-6. Usar `request.user.is_authenticated` para avaliar se está autenticado. Por exemplo, links para operações Create/Update/Delete que requeiram estar autenticado. Por exemplo, em `layout.html`, só permite criar novo autor se estiver autenticado.
+6. Usar `request.user.is_authenticated` para avaliar se está autenticado. Tipicamente, links para operações Create/Update/Delete só deverão ser renderizados se estivermos autenticados. Por exemplo, em `layout.html`, só permite criar novo autor se estiver autenticado.
 ```html
 {% if request.user.is_authenticated %}
     <a href="{% url 'novo_autor' %}">
@@ -367,7 +367,7 @@ def apaga_autor_view(request, autor_id):
 ```
 
 ## Logout
-1. em `views.py`, crie `logout_view` com chamada de `logout`
+1. em `views.py`, crie `logout_view` com chamada da função `logout(request)`
 ```python
 from django.contrib.auth import logout
 
