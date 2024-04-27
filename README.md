@@ -54,8 +54,10 @@ class AutorForm(forms.ModelForm):
 2. em `views.py`, criar view `novo_autor_view`
 ```python
 def novo_autor_view(request):
+
     form = AutorForm()      # form é uma instancia de AutorForm,
                             # formulário em branco com os campos de Autor
+
     context = {'form': form}
     return render(request, 'biblioteca/novo_autor.html', context)
 ```
@@ -78,6 +80,7 @@ def novo_autor_view(request):
           {{ form }}   <!-- insere input para cada atributo da classe Autor, numa tabela -->
       </table>
       <input type="submit" value="Criar autor"> 
+
     </form>      
 
 {% endblock %}
@@ -353,7 +356,7 @@ ef login_view(request):
 ```python
     path('login/', views.login_view, name="login"),
 ```
-5.  em `views.py`, inserir decorador `@login_required` em views que requeiram estar autenticado
+5.  em `views.py`, inserir decorador `@login_required` em views que requeiram estar autenticado.
 ```python
 @login_required
 def apaga_autor_view(request, autor_id):
