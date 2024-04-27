@@ -1,4 +1,4 @@
-# Tutorial: como criar uma web app em Django criando views, templates e urls.
+# Tutorial: criação de web app em Django com views, templates e urls.
 
 ### Recursos
 * Aplicação biblioteca: https://bibliotecalusofona.pythonanywhere.com/
@@ -41,28 +41,31 @@ Considera-se que:
 
 # Formulário de criação de novo autor
 
-1. criar `forms.py` com  ModelForm `AutorForm` 
+1. na pasta da sua aplicação, onde está `views.py`, criar `forms.py` com ModelForm `AutorForm`, formulário que terá como base a classe Autor.
 ```python
-from django import forms
-from .models import Autor
+from django import forms    # formulários Django
+from .models import Autor   
 
 class AutorForm(forms.ModelForm):
   class Meta:
-    model = Autor
-    fields = '__all__'
+    model = Autor        # classe para a qual é o formulário
+    fields = '__all__'   # inclui no form todos os campos da classe Autor.
 ```
-2. criar `novo_autor_view`
+2. em `views.py`, criar view `novo_autor_view`
 ```python
 def novo_autor_view(request):
-    form = AutorForm() # instancia 
+
+    form = AutorForm()      # form é uma instancia de AutorForm,
+                            # formulário em branco com os campos de Autor
+
     context = {'form': form}
     return render(request, 'biblioteca/novo_autor.html', context)
 ```
-3. criar novo caminho em `urls.py`
+3. em `urls.py`, criar novo caminho para a view criada
 ```python
-    path('autor/novo', views.novo_autor_view,name="novo_autor")
+    path('autor/novo', views.novo_autor_view, name="novo_autor")
 ```
-4. Criar template `novo_autor.html``
+4. Criar template `novo_autor.html`
 ```html
 {% extends 'biblioteca/layout.html' %}
 
@@ -70,26 +73,33 @@ def novo_autor_view(request):
     <h3>Novo Autor</h3>
     
     <form action="" method="post" enctype='multipart/form-data'>
-      {% csrf_token %}
+    <!-- enctype deve ser definido se houver submissão de ficheiros ou imagens -->
+
+      {% csrf_token %}   <!-- obrigatório nos forms Django -->
       <table>
-        {{ form }}
+          {{ form }}   <!-- insere input para cada atributo da classe Autor, numa tabela -->
       </table>
-      <input type="submit">
+      <input type="submit" value="Criar autor"> 
+
     </form>      
 
 {% endblock %}
 ```
-5. inserir no `index.html`, depois da lista de autores, um botão com um link para `novo_autor`
+5. Em `index.html`, depois da lista de autores, inserir um botão com link para o caminho `novo_autor`
 ```html
     <a href="{% url 'novo_autor' %}">
         <button>Inserir novo Autor</button>
     </a>
 ```
-6. visualizar
-7. receber valor, guardar e redirecionar para lista de autores
+6. visualizar a página na aplicação
+7. configurar a view `novo_autor_view` para receber os valores submetidos através do formulário, guardando-os e redirecionando para a lista de autores
 ```python
 def novo_autor_view(request):
-    form = AutorForm(request.POST or None, request.FILES)
+
+    # criar instância de formulário.
+    # Se foram submetidos dados, estes estão em request.POST e o formulario com dados é válido. 
+    # Senão, o form não tem dados e não é válido
+    form = AutorForm(request.POST or None, request.FILES)  # request.FILES deve ser incluido se forem enviados ficheiros ou imagens
     if form.is_valid():
         form.save()
         return redirect('autores')
@@ -97,14 +107,14 @@ def novo_autor_view(request):
     context = {'form': form}
     return render(request, 'biblioteca/novo_autor.html', context)
 ```
-8. remover mensagem de obrigatorio? em `layout.html`, no elemento `<style>`:
+8. visualizar aplicação. Vamos remover mensagem de obrigatorio? em `layout.html`, no elemento `<style>`:
 ```css
 .errorlist {
     display:none;
 }
 ```
 # Edita autor
-1. cria nova view
+1. cria nova view `edita_autor_view`. 
 ```python
 def edita_autor_view(request, autor_id):
     autor = Autor.objects.get(id=autor_id)
@@ -115,7 +125,7 @@ def edita_autor_view(request, autor_id):
             form.save()
             return redirect('autores')
     else:
-        form = AutorForm(instance=autor)
+        form = AutorForm(instance=autor)  # cria formulário com dados da instância autor
         
     context = {'form': form, 'autor':autor}
     return render(request, 'biblioteca/edita_autor.html', context)
@@ -188,7 +198,7 @@ def novo_livro_view(request, autor_id):
     context = {'form': form}
     return render(request, 'biblioteca/novo_livro.html', context)
 ```
-3. Criar template `novo_autor.html``
+3. Criar template `novo_livro.html`
 ```html
 {% extends 'biblioteca/layout.html' %}
 
@@ -241,7 +251,7 @@ class LivroForm(forms.ModelForm):
 ```
 
 # Utilizadores
-Registo, login, logout, autenticação, restrições de acesso a views e elementos HTML
+Registo, login, logout, autenticação, restrições de acesso a views e elementos HTML. Esta matéria será lecionada na semana de 29.4. 
 
 Passos: 
 1. Crie template
@@ -354,7 +364,7 @@ def apaga_autor_view(request, autor_id):
     autor.delete()
     return redirect('autores')
 ```
-6. Usar `request.user.is_authenticated` para avaliar se está autenticado. Por exemplo, links para operações Create/Update/Delete que requeiram estar autenticado. Por exemplo, em `layout.html`, só permite criar novo autor se estiver autenticado.
+6. Usar `request.user.is_authenticated` para avaliar se está autenticado. Tipicamente, links para operações Create/Update/Delete só deverão ser renderizados se estivermos autenticados. Por exemplo, em `layout.html`, só permite criar novo autor se estiver autenticado.
 ```html
 {% if request.user.is_authenticated %}
     <a href="{% url 'novo_autor' %}">
@@ -364,7 +374,7 @@ def apaga_autor_view(request, autor_id):
 ```
 
 ## Logout
-1. em `views.py`, crie `logout_view` com chamada de `logout`
+1. em `views.py`, crie `logout_view` com chamada da função `logout(request)`
 ```python
 from django.contrib.auth import logout
 
