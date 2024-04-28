@@ -366,7 +366,7 @@ def apaga_autor_view(request, autor_id):
     autor.delete()
     return redirect('autores')
 ```
-6. Usar `request.user.is_authenticated` para avaliar se está autenticado. Tipicamente, links para operações Create/Update/Delete só deverão ser renderizados se estivermos autenticados. Por exemplo, em `layout.html`, só permite criar novo autor se estiver autenticado.
+6. Usar `request.user.is_authenticated` para avaliar se está autenticado em templates (nas views usar decorador @login_required). Tipicamente, links para operações Create/Update/Delete só deverão ser renderizados se estivermos autenticados. Por exemplo, em `layout.html`, só permite criar novo autor se estiver autenticado.
 ```html
 {% if request.user.is_authenticated %}
     <a href="{% url 'novo_autor' %}">
