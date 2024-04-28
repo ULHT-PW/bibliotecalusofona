@@ -335,7 +335,7 @@ def registo_view(request):
 ```python
 from django.contrib.auth import authenticate, login
 
-ef login_view(request):
+def login_view(request):
     if request.method == "POST":
         user = authenticate(
             request,
@@ -358,6 +358,8 @@ ef login_view(request):
 ```
 5.  em `views.py`, inserir decorador `@login_required` em views que requeiram estar autenticado.
 ```python
+from django.contrib.auth.decorators import login_required
+
 @login_required
 def apaga_autor_view(request, autor_id):
     autor = Autor.objects.get(id=autor_id)
