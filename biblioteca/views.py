@@ -51,7 +51,8 @@ def novo_autor_view(request):
     
     context = {'form': form}
     return render(request, 'biblioteca/novo_autor.html', context)
-  
+
+
     
 @login_required
 def edita_autor_view(request, autor_id):
@@ -90,6 +91,18 @@ def novo_livro_view(request, autor_id):
     
     context = {'form': form}
     return render(request, 'biblioteca/novo_livro.html', context)
+
+
+def pesquisa_autor_view(request):
+    context = {}
+    
+    if request.POST:
+        pesquisa = request.POST['pesquisa']
+        context['pesquisa'] = pesquisa
+        context['autores'] = Autor.objects.filter(nome__contains=pesquisa)
+    
+    return render(request,"biblioteca/pesquisa-autor.html", context)
+
 
 
 from django.contrib.auth import models, authenticate, login, logout

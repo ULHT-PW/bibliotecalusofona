@@ -22,6 +22,7 @@ urlpatterns = [
     path('hello/', include('hello.urls')),
     path('noobsite/', include('noobsite.urls')),
     path('pwsite/', include('pwsite.urls')),
+    path('calculadora/', include('calculadora.urls')),
 ]
 
 

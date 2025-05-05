@@ -10,7 +10,11 @@ class AutorForm(forms.ModelForm):
       'nome': forms.TextInput(attrs={
           'placeholder':'Nome completo',
       })
-    }    
+    } 
+    
+    help_texts = {
+      'retrato': 'utilize uma imagem com menos de 100kB', 
+    }   
 
 class LivroForm(forms.ModelForm):
   class Meta:
@@ -19,6 +23,7 @@ class LivroForm(forms.ModelForm):
     
     labels = {
       'titulo': 'Título',
+      'genero': 'Género',
       'ano_publicacao': 'Ano de Publicação',
     }
     

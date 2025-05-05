@@ -1,5 +1,5 @@
 from django.db import models
-git push
+
 # Create your models here.
 
 class Autor(models.Model):
@@ -17,7 +17,7 @@ class Livro(models.Model):
     autor = models.ForeignKey(Autor, on_delete=models.CASCADE, related_name="livros")
     genero =  models.CharField(max_length=50)
     ano_publicacao = models.IntegerField()
-
-
+    excerto = models.TextField(default='', null=True, blank=True)
+    
     def __str__(self):
         return f"{self.titulo} ({self.autor})"
