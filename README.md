@@ -346,7 +346,7 @@ def login_view(request):
             login(request, user)
             return render(request, 'biblioteca/user.html')
         else:
-            render(request, 'biblioteca/login.html', {
+            return render(request, 'biblioteca/login.html', {
                 'mensagem':'Credenciais inválidas'
             })
         
