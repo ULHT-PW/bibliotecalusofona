@@ -1,4 +1,4 @@
-# Tutorial: criação de web app Biblioteca em Django com views, templates e urls e autenticação
+# Tutorial: criação de web app Biblioteca em Django com views, templates, urls e autenticação
 
 ### Recursos
 * Aplicação biblioteca: https://bibliotecalusofona.pythonanywhere.com/
