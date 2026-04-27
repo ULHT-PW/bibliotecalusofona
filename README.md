@@ -250,7 +250,7 @@ class LivroForm(forms.ModelForm):
     }
 ```
 
-<!--
+
 # Utilizadores
 Registo, login, logout, autenticação, restrições de acesso a views e elementos HTML. Esta matéria será lecionada na semana de 29.4. 
 
@@ -398,5 +398,3 @@ def logout_view(request):
         <a href="{% url 'login' %}"><button>Login</button></a>
     {% endif %}
 ```
-
--->
